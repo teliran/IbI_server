@@ -4,10 +4,9 @@ from flask import Flask, request
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import desc, func
 import json
-from flask_restful import Resource
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///idi.db'
+app.config.from_pyfile('server.cfg', silent=True)
 db = SQLAlchemy(app)
 
 class Useres(db.Model):
@@ -43,5 +42,4 @@ def printer():
 
 if __name__ == '__main__':
     db.create_all()
-    SQLALCHEMY_TRACK_MODIFICATIONS=True
-    app.run(host='0.0.0.0', port=3002)
+    app.run(host='0.0.0.0', port='3002')
