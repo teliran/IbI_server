@@ -29,9 +29,9 @@ class Actions(db.Model):
     screen_order = db.Column(db.Integer)
     time_to_pass  = db.Column(db.Integer)
     success = db.Column(db.Boolean)
-    selected_images = db.Column(db.ARRAY)
-    shown_images = db.Column(db.ARRAY)
-    top_rated_images = db.Column(db.ARRAY)
+    selected_images = db.Column(db.String)
+    shown_images = db.Column(db.String)
+    top_rated_images = db.Column(db.String)
 
 
 
@@ -43,4 +43,5 @@ def printer():
 
 if __name__ == '__main__':
     db.create_all()
-    app.run(host='0.0.0.0')
+    SQLALCHEMY_TRACK_MODIFICATIONS=True
+    app.run(host='0.0.0.0', port=3002)
