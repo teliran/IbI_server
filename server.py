@@ -23,7 +23,7 @@ class ImageRatings(db.Model):
 class Actions(db.Model):
     user_id = db.Column(db.String, primary_key = True)
     session_id = db.Column(db.Integer, primary_key = True)
-    timestamp = db.Column(db.DateTime, primary_key = True)
+    timestamp = db.Column(db.String, primary_key = True)
     total_screens = db.Column(db.Integer)
     screen_order = db.Column(db.Integer)
     time_to_pass  = db.Column(db.Integer)
@@ -54,6 +54,15 @@ def add_users():
     db.session.add(data)
     db.session.commit()
     return json.dumps('User Added')
+
+@app.route('/actions', methods=['POST'])
+def add_actions():
+    print("add_action")
+    print("json:", request.json)
+    data = Actions(user_id=request.get_json(force=True)["userId"], session_id=request.get_json(force=True)["sessionId"], timestamp=request.get_json(force=True)["timestamp"], total_screens=request.get_json(force=True)["total_screens"], screen_order=request.get_json(force=True)["screen_order"], time_to_pass=request.get_json(force=True)["time_to_pass"], success=request.get_json(force=True)["success"], selected_images=request.get_json(force=True)["selected_images"], shown_images=request.get_json(force=True)["shown_images"], top_rated_images=request.get_json(force=True)["top_rated_images"])
+    db.session.add(data)
+    db.session.commit()
+    return json.dumps('Action registered')
 
 if __name__ == '__main__':
     db.create_all()
