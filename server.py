@@ -22,7 +22,7 @@ class ImageRatings(db.Model):
 
 class Actions(db.Model):
     user_id = db.Column(db.String, primary_key = True)
-    session_id = db.Column(db.Integer, primary_key = True)
+    session_id = db.Column(db.String, primary_key = True)
     timestamp = db.Column(db.String, primary_key = True)
     total_screens = db.Column(db.Integer)
     screen_order = db.Column(db.Integer)
@@ -41,9 +41,15 @@ def printer():
 def add_ratings():
     print("add_ratings")
     print("json:", request.json)
-    data = ImageRatings(user_id=request.get_json(force=True)["userId"], image_id=request.get_json(force=True)["imageId"], rating=request.get_json(force=True)["rating"])
-    db.session.add(data)
-    db.session.commit()
+    previous_rating = ImageRatings.query.filter_by(user_id=request.get_json(force=True)["userId"], image_id=request.get_json(force=True)["imageId"]).first()
+    print("previous:", previous_rating)
+    if previous_rating is not None:
+        previous_rating.rating = request.get_json(force=True)["rating"]
+        db.session.commit()
+    else:
+        data = ImageRatings(user_id=request.get_json(force=True)["userId"], image_id=request.get_json(force=True)["imageId"], rating=request.get_json(force=True)["rating"])
+        db.session.add(data)
+        db.session.commit()
     return json.dumps('Rating Added')
 
 @app.route('/users', methods=['POST'])
