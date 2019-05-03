@@ -1,8 +1,5 @@
-import sys
-from datetime import datetime
 from flask import Flask, request
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import desc, func
 import json
 
 app = Flask(__name__)
@@ -70,6 +67,10 @@ def add_actions():
     db.session.commit()
     return json.dumps('Action registered')
 
-if __name__ == '__main__':
+
+def init_db():
     db.create_all()
+
+if __name__ == '__main__':
+    init_db()
     app.run(host='0.0.0.0', port='3002')
