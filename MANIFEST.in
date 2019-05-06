@@ -1,1 +1,2 @@
 include server/idi.db
+include server/server.log
